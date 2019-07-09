@@ -1,0 +1,51 @@
+version: 2
+
+jobs:
+  build_docker_image:
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - setup_remote_docker
+      - run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+      - run: docker pull appliedblockchain/k0-integration-tests-eth-runner || true
+      - run: docker build -t appliedblockchain/k0-integration-tests-eth-runner .
+
+  build_and_push_docker_image:
+    docker:
+      - image: docker:stable-git
+    steps:
+      - checkout
+      - run: git submodule update --init --recursive
+      - setup_remote_docker
+      - run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+      - run: docker pull appliedblockchain/k0-integration-tests-eth-runner || true
+      - run:
+          command: >
+            docker build
+            -t appliedblockchain/k0-integration-tests-eth-runner
+            -d Dockerfile
+            k0/js/packages/k0-integration-tests-eth
+      - run: docker tag appliedblockchain/k0-integration-tests-eth-runner appliedblockchain/k0-integration-tests-eth-runner:$CIRCLE_TAG
+      - run: docker push appliedblockchain/k0-integration-tests-eth-runner:$CIRCLE_TAG
+      - run: docker push appliedblockchain/k0-integration-tests-eth-runner
+
+workflows:
+  version: 2
+  standard:
+    jobs:
+      - build_docker_image:
+          context: org-global
+          filters:
+            tags:
+              ignore: /^v\d+\.\d+.\d+$/
+  versioned:
+    jobs:
+      - build_and_push_docker_image:
+          context: org-global
+          filters:
+            tags:
+              only: /^v\d+\.\d+.\d+$/
+            branches:
+              ignore: /.*/
