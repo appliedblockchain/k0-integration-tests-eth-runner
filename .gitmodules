@@ -1,0 +1,3 @@
+[submodule "k0"]
+	path = k0
+	url = git@github.com:appliedblockchain/k0.git
