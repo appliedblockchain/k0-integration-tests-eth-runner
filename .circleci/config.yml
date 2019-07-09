@@ -10,7 +10,12 @@ jobs:
       - setup_remote_docker
       - run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
       - run: docker pull appliedblockchain/k0-integration-tests-eth-runner || true
-      - run: docker build -t appliedblockchain/k0-integration-tests-eth-runner .
+      - run:
+          command: >
+            docker build
+            -t appliedblockchain/k0-integration-tests-eth-runner
+            -d Dockerfile
+            k0/js/packages/k0-integration-tests-eth
 
   build_and_push_docker_image:
     docker:
