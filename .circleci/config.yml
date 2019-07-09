@@ -6,7 +6,7 @@ jobs:
       - image: docker:stable-git
     steps:
       - checkout
-      - run: git submodule update --init --recursive
+      - run: git submodule update --init
       - setup_remote_docker
       - run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
       - run: docker pull appliedblockchain/k0-integration-tests-eth-runner || true
@@ -22,7 +22,7 @@ jobs:
       - image: docker:stable-git
     steps:
       - checkout
-      - run: git submodule update --init --recursive
+      - run: git submodule update --init
       - setup_remote_docker
       - run: echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
       - run: docker pull appliedblockchain/k0-integration-tests-eth-runner || true
