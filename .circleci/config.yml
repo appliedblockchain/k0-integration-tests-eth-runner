@@ -27,7 +27,11 @@ jobs:
             -t appliedblockchain/k0-integration-tests-eth-runner
             -d Dockerfile
             k0/js/packages/k0-integration-tests-eth
-      - run: docker tag appliedblockchain/k0-integration-tests-eth-runner appliedblockchain/k0-integration-tests-eth-runner:$CIRCLE_TAG
+      - run:
+          command: >
+            docker tag
+            appliedblockchain/k0-integration-tests-eth-runner
+            appliedblockchain/k0-integration-tests-eth-runner:$CIRCLE_TAG
       - run: docker push appliedblockchain/k0-integration-tests-eth-runner:$CIRCLE_TAG
       - run: docker push appliedblockchain/k0-integration-tests-eth-runner
 
