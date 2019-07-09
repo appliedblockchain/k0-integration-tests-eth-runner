@@ -14,7 +14,7 @@ jobs:
           command: >
             docker build
             -t appliedblockchain/k0-integration-tests-eth-runner
-            -d Dockerfile
+            -f Dockerfile
             k0/js/packages/k0-integration-tests-eth
 
   build_and_push_docker_image:
@@ -30,7 +30,7 @@ jobs:
           command: >
             docker build
             -t appliedblockchain/k0-integration-tests-eth-runner
-            -d Dockerfile
+            -f Dockerfile
             k0/js/packages/k0-integration-tests-eth
       - run:
           command: >
